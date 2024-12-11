@@ -1,13 +1,17 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/9957cd48326fe8dbd52fdc50dd2502307f188b0d";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
+    nixpkgsold.url = "github:NixOS/nixpkgs/517501bcf14ae6ec47efd6a17dda0ca8e6d866f9";
   };
 
-  outputs = { self, nixpkgs, utils }:
+  outputs = { self, nixpkgs, utils, nixpkgsold }:
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
+          inherit system;
+        };
+        pkgsold = import nixpkgsold {
           inherit system;
         };
       in
@@ -16,9 +20,6 @@
           buildInputs = [
             libiconv
             gcc
-
-            # go contains go and gofmt
-            go_1_18
 
             golangci-lint
             gopls
@@ -31,7 +32,14 @@
               SystemConfiguration
               Security
               CoreFoundation
-            ]);
+            ])
+            ++ (
+              with pkgsold; [
+                # go contains go and gofmt
+                go_1_18
+              ]
+            )
+            ;
         };
       }
     );
