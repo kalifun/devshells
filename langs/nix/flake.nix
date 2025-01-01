@@ -2,27 +2,22 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
+    base.url = "github:acehinnnqru/devshells?dir=base";
   };
 
-  outputs = { self, nixpkgs, utils }:
+  outputs = { self, nixpkgs, utils, base }:
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
         };
+      in
+      {
         devShell = with pkgs; mkShell {
-          packages = [
-            ## basic pkgs
-            tree-sitter
+          buildInputs = [
+            base.devShells.${system}.default
 
-            ## basic lsp
-            # lsp for yaml
-            yaml-language-server
-            # lsp for markdown
-            marksman
-            # lsp for json, markdown, css, html, eslint
-            vscode-langservers-extracted
-
+            nil
           ] ++ lib.optionals stdenv.isDarwin (with darwin;
             with apple_sdk.frameworks; [
               libiconv
@@ -33,9 +28,6 @@
               CoreFoundation
             ]);
         };
-      in
-      {
-        devShells.default = devShell;
       }
     );
 }
