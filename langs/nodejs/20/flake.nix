@@ -2,33 +2,42 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
+    baseshell.url = "github:acehinnnqru/devshells?dir=base";
   };
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    utils,
+    baseshell,
+  }:
+    utils.lib.eachDefaultSystem (
+      system: let
         pkgs = import nixpkgs {
           inherit system;
         };
-      in
-      {
-        devShell = with pkgs; mkShell {
-          buildInputs = [
-            libiconv
-            gcc
+      in {
+        devShell = with pkgs;
+          mkShell {
+            inputsFrom = [
+              baseshell.devShells.${system}.default
+            ];
 
-            nodejs_20
-            yarn
-          ] ++ lib.optionals stdenv.isDarwin (with darwin;
-            with apple_sdk.frameworks; [
+            packages = [
               libiconv
-              libresolv
-              Libsystem
-              SystemConfiguration
-              Security
-              CoreFoundation
-            ]);
-        };
+              gcc
+
+              # basic
+              nodejs_20
+              yarn
+
+              ## lsp
+              # lsp for ts
+              typescript-language-server
+              # lsp for json, markdown, css, html, eslint
+              vscode-langservers-extracted
+            ];
+          };
       }
     );
 }
