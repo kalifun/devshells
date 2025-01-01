@@ -20,6 +20,7 @@
       {
         devShell = with pkgs; mkShell {
           buildInputs = [
+            taplo
             libiconv
             gcc
             (toolchain.withComponents [
