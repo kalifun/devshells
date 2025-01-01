@@ -1,6 +1,6 @@
 {
   "nodes": {
-    "base": {
+    "baseshell": {
       "inputs": {
         "nixpkgs": "nixpkgs",
         "utils": "utils"
@@ -55,7 +55,7 @@
     },
     "root": {
       "inputs": {
-        "base": "base",
+        "baseshell": "baseshell",
         "nixpkgs": "nixpkgs_2",
         "utils": "utils_2"
       }
