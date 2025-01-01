@@ -16,6 +16,7 @@
             baseshell.devShells.${system}.default
           ];
           packages = [
+            alejandra
             nil
           ];
         };
