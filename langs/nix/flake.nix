@@ -5,23 +5,28 @@
     baseshell.url = "github:acehinnnqru/devshells?dir=base";
   };
 
-  outputs = { self, nixpkgs, utils, baseshell }:
-    utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    utils,
+    baseshell,
+  }:
+    utils.lib.eachDefaultSystem (
+      system: let
         pkgs = import nixpkgs {
           inherit system;
         };
-        devShell = with pkgs; mkShell {
-          inputsFrom = [
-            baseshell.devShells.${system}.default
-          ];
-          packages = [
-            alejandra
-            nil
-          ];
-        };
-      in
-      {
+        devShell = with pkgs;
+          mkShell {
+            inputsFrom = [
+              baseshell.devShells.${system}.default
+            ];
+            packages = [
+              alejandra
+              nil
+            ];
+          };
+      in {
         devShells.default = devShell;
       }
     );
