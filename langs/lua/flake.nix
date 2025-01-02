@@ -24,8 +24,12 @@
             ];
 
             packages = [
+              # lang
               lua
+              # formatter
               stylua
+              # lsp
+              lua-language-server
             ];
 
             AU_LANG_LUA = "1";
