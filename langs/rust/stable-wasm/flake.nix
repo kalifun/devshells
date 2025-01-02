@@ -6,43 +6,47 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    baseshell.url = "github:acehinnnqru/devshells?dir=base";
   };
 
-  outputs = { self, nixpkgs, utils, fenix }:
-    utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    utils,
+    fenix,
+    baseshell,
+  }:
+    utils.lib.eachDefaultSystem (
+      system: let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ fenix.overlays.default ];
+          overlays = [fenix.overlays.default];
         };
-      in
-      {
-        devShell = with pkgs; mkShell {
-          buildInputs = [
-            libiconv
-            gcc
+      in {
+        devShell = with pkgs;
+          mkShell {
+            inputsFrom = [
+              baseshell.devShells.${system}.default
+            ];
 
-            (with fenix.packages."${system}"; combine [
-              stable.cargo
-              stable.clippy
-              stable.rust-src
-              stable.rustc
-              stable.rustfmt
-              targets.wasm32-wasi.stable.rust-std
-            ])
-
-            rust-analyzer
-            wasmedge
-          ] ++ lib.optionals stdenv.isDarwin (with darwin;
-            with apple_sdk.frameworks; [
+            packages = [
               libiconv
-              libresolv
-              Libsystem
-              SystemConfiguration
-              Security
-              CoreFoundation
-            ]);
-        };
+              gcc
+
+              (with fenix.packages."${system}";
+                combine [
+                  stable.cargo
+                  stable.clippy
+                  stable.rust-src
+                  stable.rustc
+                  stable.rustfmt
+                  targets.wasm32-wasi.stable.rust-std
+                ])
+
+              rust-analyzer
+              wasmedge
+            ];
+          };
       }
     );
 }

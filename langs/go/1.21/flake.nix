@@ -35,6 +35,8 @@
               gotools
               gomodifytags
             ];
+
+            AU_LANG_GO = "1";
           };
       }
     );
