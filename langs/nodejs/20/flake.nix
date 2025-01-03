@@ -37,6 +37,10 @@
               # lsp for json, markdown, css, html, eslint
               vscode-langservers-extracted
             ];
+
+            AU_LANG_TS = 1;
+            AU_LANG_CSS = 1;
+            AU_LANG_HTML = 1;
           };
       }
     );
