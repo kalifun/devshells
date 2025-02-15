@@ -30,6 +30,8 @@
               baseshell.devShells.${system}.default
             ];
 
+            AU_LANG_RUST = "1";
+
             packages = [
               taplo
               libiconv

@@ -42,6 +42,8 @@
               ])
               rust-analyzer
             ];
+
+            AU_LANG_RUST = "1";
           };
       }
     );
