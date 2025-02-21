@@ -36,6 +36,9 @@
               typescript-language-server
               # lsp for json, markdown, css, html, eslint
               vscode-langservers-extracted
+
+              # formatter
+              prettierd
             ];
 
             AU_LANG_TS = 1;
