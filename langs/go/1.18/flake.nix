@@ -21,7 +21,6 @@
         pkgs_with_go118 = import nixpkgs_with_go118 {
           inherit system;
         };
-      in {
         devShell = with pkgs;
           mkShell {
             inputsFrom = [
@@ -47,6 +46,8 @@
 
             AU_LANG_GO = "1";
           };
+      in {
+        devShells.default = devShell;
       }
     );
 }
