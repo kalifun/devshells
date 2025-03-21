@@ -16,7 +16,6 @@
         pkgs = import nixpkgs {
           inherit system;
         };
-      in {
         devShell = with pkgs;
           mkShell {
             inputsFrom = [
@@ -34,6 +33,8 @@
 
             AU_LANG_LUA = "1";
           };
+      in {
+        devShells.default = devShell;
       }
     );
 }
