@@ -22,24 +22,19 @@
           inherit system;
           overlays = [fenix.overlays.default];
         };
-        toolchain = fenix.packages."${system}".stable;
       in {
         devShell = with pkgs;
           mkShell {
             inputsFrom = [
               baseshell.devShells.${system}.default
             ];
+            nativeBuildInputs = [
+              fenix.packages.${system}.stable.toolchain
+            ];
 
             packages = [
               libiconv
               gcc
-              (toolchain.withComponents [
-                "cargo"
-                "clippy"
-                "rust-src"
-                "rustc"
-                "rustfmt"
-              ])
               rust-analyzer
             ];
 
