@@ -22,7 +22,6 @@
           inherit system;
           overlays = [fenix.overlays.default];
         };
-      in {
         devShell = with pkgs;
           mkShell {
             inputsFrom = [
@@ -41,6 +40,8 @@
               rust-analyzer-nightly
             ];
           };
+      in {
+        devShells.default = devShell;
       }
     );
 }
