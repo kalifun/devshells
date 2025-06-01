@@ -31,7 +31,9 @@
               fenix.packages.${system}.complete.toolchain
             ];
 
-            AU_LANG_RUST = "1";
+            env = {
+              AU_LANG_RUST = "1";
+            };
 
             packages = [
               taplo
