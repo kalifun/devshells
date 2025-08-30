@@ -16,28 +16,18 @@
         };
         devShell = with pkgs;
           mkShell {
-            packages =
-              [
-                ## basic pkgs
-                tree-sitter
+            packages = [
+              ## basic pkgs
+              tree-sitter
 
-                ## basic lsp
-                # lsp for yaml
-                yaml-language-server
-                # lsp for markdown
-                marksman
-                # lsp for json, markdown, css, html, eslint
-                vscode-langservers-extracted
-              ]
-              ++ lib.optionals stdenv.isDarwin (with darwin;
-                with apple_sdk.frameworks; [
-                  libiconv
-                  libresolv
-                  Libsystem
-                  SystemConfiguration
-                  Security
-                  CoreFoundation
-                ]);
+              ## basic lsp
+              # lsp for yaml
+              yaml-language-server
+              # lsp for markdown
+              marksman
+              # lsp for json, markdown, css, html, eslint
+              vscode-langservers-extracted
+            ];
           };
       in {
         devShells.default = devShell;
