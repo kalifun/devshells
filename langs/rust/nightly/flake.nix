@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     fenix = {
-      url = "github:nix-community/fenix";
+      url = "github:dustypomerleau/fenix/sdk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     baseshell.url = "github:acehinnnqru/devshells?dir=base";
