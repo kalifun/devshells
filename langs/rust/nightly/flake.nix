@@ -37,9 +37,10 @@
 
             packages = [
               taplo
-              libiconv
-              gcc
               rust-analyzer-nightly
+
+              pkg-config
+              openssl.dev
             ];
           };
       in {

@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "base",
-        "lastModified": 1756537476,
-        "narHash": "sha256-BdvFpmoe4ir4C2sLKMwV4ySUJTg/itEYP+NoMoZUq9w=",
+        "lastModified": 1756538803,
+        "narHash": "sha256-ztxR6LlmqUDEL9/mSX3avZrrubE40ZOJidBF9o9ezzM=",
         "owner": "acehinnnqru",
         "repo": "devshells",
-        "rev": "62e516978bf1d229b786ac226603f2d9681a8cad",
+        "rev": "574c84e34b6a782a9a77c519586b781e27006cfe",
         "type": "github"
       },
       "original": {
