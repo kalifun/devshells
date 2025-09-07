@@ -13,23 +13,29 @@
   }:
     utils.lib.eachDefaultSystem (
       system: let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
-        devShell = with pkgs;
-          mkShell {
-            inputsFrom = [
-              baseshell.devShells.${system}.default
-            ];
-            packages = [
-              alejandra
-              nil
-            ];
-
-            AU_LANG_NIX = "1";
-          };
+        pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = devShell;
+        devShells.default = pkgs.mkShell (
+          pkgs.lib.mkMerge [
+            baseshell.devShells.${system}.default
+
+            {
+              packages = with pkgs; [
+                alejandra
+                nil
+              ];
+
+              AU_LANG_NIX = "1";
+
+              shellHook = pkgs.lib.mkOptionDefault (
+                (baseshell.devShells.${system}.default.shellHook or "")
+                + ''
+                  echo "devshells for nix"
+                ''
+              );
+            }
+          ]
+        );
       }
     );
 }
