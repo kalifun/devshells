@@ -27,7 +27,12 @@
               marksman
               # lsp for json, markdown, css, html, eslint
               vscode-langservers-extracted
+
+              alejandra
+              nil
             ];
+
+            AU_LANG_NIX = "1";
           };
       in {
         devShells.default = devShell;
