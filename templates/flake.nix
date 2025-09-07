@@ -4,28 +4,38 @@
   outputs = {self}: {
     templates = {
       plain = {
-        description = "plain shell templatebased on base shell";
-        path = ./templates/plain;
+        description = "plain shell template based on base shell";
+        path = ./plain;
       };
 
       rust = {
-        description = "rust shell templatebased on base shell";
-        path = ./templates/rust;
+        description = "rust shell template based on base shell";
+        path = ./rust;
       };
 
       go = {
-        description = "go shell templatebased on base shell";
-        path = ./templates/go;
+        description = "go shell template based on base shell";
+        path = ./go;
       };
 
       lua = {
-        description = "lua shell templatebased on base shell";
-        path = ./templates/lua;
+        description = "lua shell template based on base shell";
+        path = ./lua;
       };
 
       zig = {
-        description = "zig shell templatebased on base shell";
-        path = ./templates/zig;
+        description = "zig shell template based on base shell";
+        path = ./zig;
+      };
+
+      nodejs = {
+        description = "nodejs shell template based on base shell";
+        path = ./nodejs;
+      };
+
+      python = {
+        description = "python shell template based on base shell";
+        path = ./python;
       };
     };
   };
