@@ -2,7 +2,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
-    baseshell.url = "github:acehinnnqru/devshells?dir=base";
+    baseshell = {
+      url = "github:acehinnnqru/devshells?dir=base";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "utils";
+    };
     nixpkgs_with_go118.url = "github:NixOS/nixpkgs/517501bcf14ae6ec47efd6a17dda0ca8e6d866f9";
   };
 

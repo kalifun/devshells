@@ -6,7 +6,11 @@
       url = "github:dustypomerleau/fenix/sdk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    baseshell.url = "github:acehinnnqru/devshells?dir=base";
+    baseshell = {
+      url = "github:acehinnnqru/devshells?dir=base";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "utils";
+    };
   };
 
   outputs = {
