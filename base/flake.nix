@@ -32,7 +32,9 @@
               nil
             ];
 
-            AU_LANG_NIX = "1";
+            shellHook = ''
+              export AU_LANG_NIX=1;
+            '';
           };
       in {
         devShells.default = devShell;
