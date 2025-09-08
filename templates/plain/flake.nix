@@ -5,7 +5,7 @@
     # devshells also provided basic langs requirements under dir langs,
     # including go, rust, nodejs and so on.
     baseshell = {
-      url = "/Users/bytedance/r/github.com/acehinnnqru/devshells/base";
+      url = "github:acehinnnqru/devshells/base";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };

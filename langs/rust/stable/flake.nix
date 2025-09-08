@@ -31,18 +31,13 @@
           mkShell {
             inputsFrom = [
               baseshell.devShells.${system}.default
-              pkgs.pkgsCross.x86_64-darwin.libiconv
+            ];
+
+            nativeBuildInputs = [
+              fenix.packages.${system}.stable.toolchain
             ];
 
             packages = [
-              (
-                with fenix.packages.${system};
-                  combine [
-                    stable.toolchain
-                    targets.x86_64-apple-darwin.stable.rust-std
-                  ]
-              )
-
               libiconv
               gcc
               rust-analyzer
@@ -50,10 +45,8 @@
             ];
 
             shellHook = ''
-              export RUSTFLAGS="-L ${pkgs.pkgsCross.x86_64-darwin.libiconv}/lib $RUSTFLAGS";
+              export AU_LANG_RUST="1"
             '';
-            AU_LANG_RUST = "1";
-            CARGO_TARGET_X86_64_APPLE_DARWIN_LINKER = "lld";
           };
       }
     );
