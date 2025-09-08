@@ -30,6 +30,8 @@
 
               alejandra
               nil
+
+              just
             ];
 
             shellHook = ''
