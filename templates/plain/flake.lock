@@ -10,19 +10,14 @@
         ]
       },
       "locked": {
-        "dir": "base",
-        "lastModified": 1756539652,
-        "narHash": "sha256-rYD/8bMxcQalFl7Nz78ZKBbmSiE91rJa2FjbtySOKQs=",
-        "owner": "acehinnnqru",
-        "repo": "devshells",
-        "rev": "8905625239e003c0dc5918eecf7f8379735ac5b7",
-        "type": "github"
+        "lastModified": 1757300416,
+        "narHash": "sha256-B5u9HdE1vT6FWfDTxZsHhyXublUip0ecn3lcMxzPyWo=",
+        "path": "/Users/bytedance/r/github.com/acehinnnqru/devshells/base",
+        "type": "path"
       },
       "original": {
-        "dir": "base",
-        "owner": "acehinnnqru",
-        "repo": "devshells",
-        "type": "github"
+        "path": "/Users/bytedance/r/github.com/acehinnnqru/devshells/base",
+        "type": "path"
       }
     },
     "nixpkgs": {

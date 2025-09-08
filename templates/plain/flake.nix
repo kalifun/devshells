@@ -5,7 +5,7 @@
     # devshells also provided basic langs requirements under dir langs,
     # including go, rust, nodejs and so on.
     baseshell = {
-      url = "github:acehinnnqru/devshells?dir=base";
+      url = "/Users/bytedance/r/github.com/acehinnnqru/devshells/base";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
@@ -21,26 +21,19 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
+          ];
 
-            {
-              packages = with pkgs; [
-                # install the packages you need
-              ];
+          packages = with pkgs; [
+            # install the packages you need
+          ];
 
-              # set your own envs
-
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "enter custom devshells"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            echo "enter custom devshells"
+          '';
+        };
       }
     );
 }

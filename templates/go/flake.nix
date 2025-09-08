@@ -21,38 +21,29 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
+          ];
 
-            {
-              packages = with pkgs; [
-                # install the packages you need
-                libiconv
-                gcc
+          packages = with pkgs; [
+            # install the packages you need
+            libiconv
+            gcc
 
-                # go contains go and gofmt
-                go
+            # go contains go and gofmt
+            go
 
-                golangci-lint
-                gopls
-                gotools
-                gomodifytags
-              ];
+            golangci-lint
+            gopls
+            gotools
+            gomodifytags
+          ];
 
-              AU_LANG_GO = "1";
-
-              # set your own envs
-
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "enter custom devshells"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            export AU_LANG_GO=1;
+          '';
+        };
       }
     );
 }

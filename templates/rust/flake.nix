@@ -27,34 +27,29 @@
           overlays = [fenix.overlays.default];
         };
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
-            {
-              packages = with pkgs; [
-                (
-                  with fenix.packages.${system};
-                    combine [
-                      stable.toolchain
-                    ]
-                )
+          ];
+          packages = with pkgs; [
+            (
+              with fenix.packages.${system};
+                combine [
+                  stable.toolchain
+                ]
+            )
 
-                libiconv
-                gcc
-                rust-analyzer
-                llvmPackages.bintools
-              ];
+            libiconv
+            gcc
+            rust-analyzer
+            llvmPackages.bintools
+          ];
 
-              AU_LANG_RUST = "1";
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "进入增强开发环境"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            export AU_LANG_RUST=1;
+            echo "进入增强开发环境"
+          '';
+        };
       }
     );
 }

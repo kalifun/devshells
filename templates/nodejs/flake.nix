@@ -21,45 +21,33 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
+          ];
+          packages = with pkgs; [
+            # install the packages you need
+            nodejs_22
+            yarn
+            pnpm
 
-            {
-              packages = with pkgs; [
-                # install the packages you need
-                libiconv
-                gcc
+            ## lsp
+            # lsp for ts
+            typescript-language-server
+            # lsp for json, markdown, css, html, eslint
+            vscode-langservers-extracted
 
-                # basic
-                nodejs_22
-                yarn
-                pnpm
+            # formatter
+            prettierd
+          ];
 
-                ## lsp
-                # lsp for ts
-                typescript-language-server
-                # lsp for json, markdown, css, html, eslint
-                vscode-langservers-extracted
-
-                # formatter
-                prettierd
-              ];
-
-              # set your own envs
-              AU_LANG_TS = 1;
-              AU_LANG_CSS = 1;
-              AU_LANG_HTML = 1;
-
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "enter custom devshells"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            export AU_LANG_TS=1;
+            export AU_LANG_CSS=1;
+            export AU_LANG_HTML=1;
+            echo "enter custom devshells"
+          '';
+        };
       }
     );
 }

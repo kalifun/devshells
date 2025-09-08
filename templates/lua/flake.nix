@@ -21,33 +21,25 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
+          ];
+          packages = with pkgs; [
+            # install the packages you need
+            lua
+            # formatter
+            stylua
+            # lsp
+            lua-language-server
+          ];
 
-            {
-              packages = with pkgs; [
-                # install the packages you need
-                lua
-                # formatter
-                stylua
-                # lsp
-                lua-language-server
-              ];
+          # set your own envs
 
-              # set your own envs
-
-              AU_LANG_LUA = 1;
-
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "enter custom devshells"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            export AU_LANG_LUA=1;
+          '';
+        };
       }
     );
 }

@@ -21,32 +21,28 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
+          ];
+          packages = [
+            # install the packages you need
+            python311
 
-            {
-              packages = with pkgs; [
-                # install the packages you need
-                python311
+            uv
+            ruff
+            ty
+          ];
 
-                uv
-                ruff
-                ty
-              ];
+          shellHook = ''
+            echo "enter custom devshells"
 
-              # set your own envs
-              UV_PYTHON_DOWNLOADS = "never";
+            export UV_PYTHON_DOWNLOADS=never
+            # [ -d ".venv" ] && echo ".venv exists" || { echo -e "\033[31m.venv not exists...\033[0m"; echo "creating ..."; uv venv .venv; }
 
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "enter custom devshells"
-                ''
-              );
-            }
-          ]
-        );
+            # [ -d ".venv" ] && { source ./.venv/bin/activate; echo "enter .venv" } || true
+          '';
+        };
       }
     );
 }
