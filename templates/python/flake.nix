@@ -25,7 +25,7 @@
           inputsFrom = [
             baseshell.devShells.${system}.default
           ];
-          packages = [
+          packages = with pkgs; [
             # install the packages you need
             python311
 

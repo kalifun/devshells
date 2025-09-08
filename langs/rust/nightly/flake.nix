@@ -31,6 +31,7 @@
             inputsFrom = [
               baseshell.devShells.${system}.default
             ];
+
             nativeBuildInputs = [
               fenix.packages.${system}.complete.toolchain
             ];
