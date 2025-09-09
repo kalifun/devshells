@@ -11,11 +11,11 @@
       },
       "locked": {
         "dir": "base",
-        "lastModified": 1757300484,
-        "narHash": "sha256-Gp1FRKjpffAKZyFndWZHXVi5BWmKmlCpcrvEXIlD7HI=",
+        "lastModified": 1757333353,
+        "narHash": "sha256-VIrbN1xuAZY1ygBccusgkQvNI07aGQoq2KUEp9vZXRc=",
         "owner": "acehinnnqru",
         "repo": "devshells",
-        "rev": "a8a08a6bd1608ce071bfac25c7d80362b3f70c5c",
+        "rev": "7fa362bccdb50c72689da3712bb7ee8818c18ddd",
         "type": "github"
       },
       "original": {
@@ -41,10 +41,27 @@
         "type": "github"
       }
     },
+    "nixpkgs_with_go121": {
+      "locked": {
+        "lastModified": 1725980463,
+        "narHash": "sha256-3ruEhwpLlccjwYTvLCyFAtPndcRxAs3XazL2lhOXucI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5ed627539ac84809c78b2dd6d26a5cebeb5ae269",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5ed627539ac84809c78b2dd6d26a5cebeb5ae269",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "baseshell": "baseshell",
         "nixpkgs": "nixpkgs",
+        "nixpkgs_with_go121": "nixpkgs_with_go121",
         "utils": "utils"
       }
     },
