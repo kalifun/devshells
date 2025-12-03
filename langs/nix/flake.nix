@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
+    # devshells also provided basic langs requirements under dir langs,
+    # including go, rust, nodejs and so on.
     baseshell = {
       url = "github:acehinnnqru/devshells?dir=base";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,27 +21,21 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        devShells.default = pkgs.mkShell (
-          pkgs.lib.mkMerge [
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
             baseshell.devShells.${system}.default
-
-            {
-              packages = with pkgs; [
+          ];
+          packages = with pkgs; [
                 alejandra
                 nil
-              ];
+          ];
 
-              AU_LANG_NIX = "1";
+          # set your own envs
 
-              shellHook = pkgs.lib.mkOptionDefault (
-                (baseshell.devShells.${system}.default.shellHook or "")
-                + ''
-                  echo "devshells for nix"
-                ''
-              );
-            }
-          ]
-        );
+          shellHook = ''
+            export AU_LANG_NIX=1;
+          '';
+        };
       }
     );
 }
