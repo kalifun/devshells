@@ -1,13 +1,14 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     baseshell = {
       url = "github:acehinnnqru/devshells?dir=base";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
-    nixpkgs_with_go123.url = "github:NixOS/nixpkgs/a343533bccc62400e8a9560423486a3b6c11a23b";
+
+    nixpkgs_with_go124.url = "github:NixOS/nixpkgs/418468ac9527e799809c900eda37cbff999199b6";
   };
 
   outputs = {
@@ -15,14 +16,14 @@
     nixpkgs,
     utils,
     baseshell,
-    nixpkgs_with_go123,
+    nixpkgs_with_go124,
   }:
     utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {
           inherit system;
         };
-        pkgs_with_go123 = import nixpkgs_with_go123 {
+        pkgs_with_go124 = import nixpkgs_with_go124 {
           inherit system;
         };
         devShell = with pkgs;
@@ -37,14 +38,13 @@
                 gcc
 
                 golangci-lint
-                gopls
                 gotools
                 gomodifytags
               ]
               ++ (
-                with pkgs_with_go123; [
+                with pkgs_with_go124; [
                   # go contains go and gofmt
-                  go_1_23
+                  go_1_24
                   gopls
                 ]
               );
