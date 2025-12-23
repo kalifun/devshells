@@ -37,6 +37,7 @@
               gopls
               gotools
               gomodifytags
+              delve
             ];
 
             AU_LANG_GO = "1";
