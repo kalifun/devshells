@@ -29,21 +29,19 @@
       ];
 
       imports = [
-        ./flake-modules/common.nix
-        
-        # langs
-        ./flake-modules/langs/go.nix
-        ./flake-modules/langs/lua.nix
-        ./flake-modules/langs/nix.nix
-        ./flake-modules/langs/nodejs.nix
-        ./flake-modules/langs/python.nix
-        ./flake-modules/langs/rust.nix
-        ./flake-modules/langs/thrift.nix
-        ./flake-modules/langs/zig.nix
-        ./flake-modules/langs/default.nix
+        ./common.nix
 
-        # projects
-        ./flake-modules/projects/neovim.nix
+        ./langs/go.nix
+        ./langs/lua.nix
+        ./langs/nix.nix
+        ./langs/nodejs.nix
+        ./langs/python.nix
+        ./langs/rust.nix
+        ./langs/thrift.nix
+        ./langs/zig.nix
+        ./langs/default.nix
+
+        ./projects/neovim.nix
       ];
     };
 }
