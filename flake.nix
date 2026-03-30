@@ -30,6 +30,8 @@
 
       imports = [
         ./flake-modules/common.nix
+        
+        # langs
         ./flake-modules/langs/go.nix
         ./flake-modules/langs/lua.nix
         ./flake-modules/langs/nix.nix
@@ -39,6 +41,9 @@
         ./flake-modules/langs/thrift.nix
         ./flake-modules/langs/zig.nix
         ./flake-modules/langs/default.nix
+
+        # projects
+        ./flake-modules/projects/neovim.nix
       ];
     };
 }
