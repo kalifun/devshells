@@ -2,20 +2,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
-    # devshells also provided basic langs requirements under dir langs,
-    # including go, rust, nodejs and so on.
-    baseshell = {
-      url = "github:acehinnnqru/devshells?dir=base";
+    devshells = {
+      url = "github:acehinnnqru/devshells";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
     };
   };
 
   outputs = {
-    self,
     nixpkgs,
     utils,
-    baseshell,
+    devshells,
+    ...
   }:
     utils.lib.eachDefaultSystem (
       system: let
@@ -23,28 +20,14 @@
       in {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
-            baseshell.devShells.${system}.default
+            devshells.devShells.${system}."nodejs-22"
           ];
           packages = with pkgs; [
             # install the packages you need
-            nodejs_22
-            yarn
-            pnpm
-
-            ## lsp
-            # lsp for ts
-            typescript-language-server
-            # lsp for json, markdown, css, html, eslint
-            vscode-langservers-extracted
-
-            # formatter
-            prettierd
+            # ripgrep
           ];
 
           shellHook = ''
-            export AU_LANG_TS=1;
-            export AU_LANG_CSS=1;
-            export AU_LANG_HTML=1;
             echo "enter custom devshells"
           '';
         };

@@ -2,20 +2,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
-    # devshells also provided basic langs requirements under dir langs,
-    # including go, rust, nodejs and so on.
-    baseshell = {
-      url = "github:acehinnnqru/devshells/base";
+    devshells = {
+      url = "github:acehinnnqru/devshells";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
     };
   };
 
   outputs = {
-    self,
     nixpkgs,
     utils,
-    baseshell,
+    devshells,
+    ...
   }:
     utils.lib.eachDefaultSystem (
       system: let
@@ -23,7 +20,7 @@
       in {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
-            baseshell.devShells.${system}.default
+            devshells.devShells.${system}.default
           ];
 
           packages = with pkgs; [

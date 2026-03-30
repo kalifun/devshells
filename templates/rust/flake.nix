@@ -2,52 +2,33 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
-    fenix = {
-      url = "github:nix-community/fenix";
+    devshells = {
+      url = "github:acehinnnqru/devshells";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    baseshell = {
-      url = "github:acehinnnqru/devshells?dir=base";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
     };
   };
 
   outputs = {
-    self,
     nixpkgs,
     utils,
-    fenix,
-    baseshell,
+    devshells,
+    ...
   }:
     utils.lib.eachDefaultSystem (
       system: let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [fenix.overlays.default];
-        };
+        pkgs = import nixpkgs {inherit system;};
       in {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
-            baseshell.devShells.${system}.default
+            devshells.devShells.${system}."rust-stable"
           ];
           packages = with pkgs; [
-            (
-              with fenix.packages.${system};
-                combine [
-                  stable.toolchain
-                ]
-            )
-
-            libiconv
-            gcc
-            rust-analyzer
-            llvmPackages.bintools
+            # install the packages you need
+            # ripgrep
           ];
 
           shellHook = ''
-            export AU_LANG_RUST=1;
-            echo "进入增强开发环境"
+            echo "enter custom devshells"
           '';
         };
       }
