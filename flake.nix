@@ -30,6 +30,7 @@
 
       imports = [
         ./common.nix
+        ./templates/default.nix
 
         ./langs/go.nix
         ./langs/lua.nix

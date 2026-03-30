@@ -19,16 +19,7 @@
           luajit
           stylua
           lua-language-server
-        ])
-        ++ lib.optionals stdenv.isDarwin (with darwin;
-          with apple_sdk.frameworks; [
-            libiconv
-            libresolv
-            Libsystem
-            SystemConfiguration
-            Security
-            CoreFoundation
-          ]);
+        ]);
     };
   };
 }
