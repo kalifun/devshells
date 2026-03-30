@@ -17,10 +17,6 @@
             vscode-langservers-extracted
             prettierd
           ]);
-
-        AU_LANG_TS = 1;
-        AU_LANG_CSS = 1;
-        AU_LANG_HTML = 1;
       };
 
       "nodejs-22" = pkgs.mkShell {
@@ -36,10 +32,6 @@
             vscode-langservers-extracted
             prettierd
           ]);
-
-        AU_LANG_TS = 1;
-        AU_LANG_CSS = 1;
-        AU_LANG_HTML = 1;
       };
     };
   };

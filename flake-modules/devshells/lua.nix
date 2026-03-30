@@ -12,8 +12,6 @@
           stylua
           lua-language-server
         ]);
-
-      AU_LANG_LUA = "1";
     };
   };
 }

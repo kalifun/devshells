@@ -30,10 +30,6 @@
         nativeBuildInputs = [
           inputs.fenix.packages.${system}.stable.toolchain
         ];
-
-        shellHook = ''
-          export AU_LANG_RUST="1"
-        '';
       };
 
       "rust-nightly" = pkgsWithFenix.mkShell {
@@ -49,10 +45,6 @@
         nativeBuildInputs = [
           inputs.fenix.packages.${system}.complete.toolchain
         ];
-
-        env = {
-          AU_LANG_RUST = "1";
-        };
       };
 
       "rust-nightly-wasm" = pkgsWithFenix.mkShell {
@@ -68,10 +60,6 @@
         nativeBuildInputs = [
           wasmToolchain
         ];
-
-        env = {
-          AU_LANG_RUST = "1";
-        };
       };
     };
   };

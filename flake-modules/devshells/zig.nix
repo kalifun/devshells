@@ -13,8 +13,6 @@
             zls
             zig
           ]);
-
-        AU_LANG_ZIG = "1";
       };
 
       "zig-latest" = pkgs.mkShell {
@@ -26,8 +24,6 @@
           ++ [
             inputs.zig-overlay.packages.${system}.master
           ];
-
-        AU_LANG_ZIG = "1";
       };
     };
   };

@@ -10,8 +10,6 @@
         ++ (with pkgs; [
           thrift-ls
         ]);
-
-      AU_LANG_THRIFT = "1";
     };
   };
 }

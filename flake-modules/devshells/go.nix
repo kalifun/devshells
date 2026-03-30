@@ -35,6 +35,7 @@
           ++ (with pkgsGo125; [
             go_1_25
             gopls
+            delve
           ]);
       };
 
@@ -45,9 +46,8 @@
           ++ (with pkgsGo124; [
             go_1_24
             gopls
+            delve
           ]);
-
-        AU_LANG_GO = "1";
       };
     };
   };
