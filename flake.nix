@@ -29,16 +29,16 @@
       ];
 
       imports = [
-        ./flake-modules/devshells/common.nix
-        ./flake-modules/devshells/go.nix
-        ./flake-modules/devshells/lua.nix
-        ./flake-modules/devshells/nix.nix
-        ./flake-modules/devshells/nodejs.nix
-        ./flake-modules/devshells/python.nix
-        ./flake-modules/devshells/rust.nix
-        ./flake-modules/devshells/thrift.nix
-        ./flake-modules/devshells/zig.nix
-        ./flake-modules/devshells/default.nix
+        ./flake-modules/common.nix
+        ./flake-modules/langs/go.nix
+        ./flake-modules/langs/lua.nix
+        ./flake-modules/langs/nix.nix
+        ./flake-modules/langs/nodejs.nix
+        ./flake-modules/langs/python.nix
+        ./flake-modules/langs/rust.nix
+        ./flake-modules/langs/thrift.nix
+        ./flake-modules/langs/zig.nix
+        ./flake-modules/langs/default.nix
       ];
     };
 }
