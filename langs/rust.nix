@@ -25,6 +25,8 @@
             gcc
             rust-analyzer
             llvmPackages.bintools
+
+            cargo-nextest
           ]);
 
         nativeBuildInputs = [
@@ -40,6 +42,7 @@
             rust-analyzer-nightly
             pkg-config
             openssl.dev
+            cargo-nextest
           ]);
 
         nativeBuildInputs = [
@@ -55,6 +58,7 @@
             libiconv
             gcc
             rust-analyzer-nightly
+            cargo-nextest
           ]);
 
         nativeBuildInputs = [
