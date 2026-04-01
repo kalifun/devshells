@@ -32,6 +32,8 @@
         nativeBuildInputs = [
           inputs.fenix.packages.${system}.stable.toolchain
         ];
+
+        RUST_BACKTRACE = 1;
       };
 
       "rust-nightly" = pkgsWithFenix.mkShell {
@@ -48,6 +50,8 @@
         nativeBuildInputs = [
           inputs.fenix.packages.${system}.complete.toolchain
         ];
+
+        RUST_BACKTRACE = 1;
       };
 
       "rust-nightly-wasm" = pkgsWithFenix.mkShell {
@@ -64,6 +68,8 @@
         nativeBuildInputs = [
           wasmToolchain
         ];
+
+        RUST_BACKTRACE = 1;
       };
     };
   };
