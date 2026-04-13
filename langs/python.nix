@@ -30,6 +30,19 @@
 
         UV_PYTHON_DOWNLOADS = "never";
       };
+
+      "python-314" = pkgs.mkShell {
+        packages =
+          basePackages
+          ++ (with pkgs; [
+            python314
+            uv
+            ruff
+            ty
+          ]);
+
+        UV_PYTHON_DOWNLOADS = "never";
+      };
     };
   };
 }
