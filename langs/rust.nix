@@ -21,10 +21,12 @@
         packages =
           basePackages
           ++ (with pkgsWithFenix; [
-            libiconv
-            gcc
+            taplo
             rust-analyzer
-            llvmPackages.bintools
+            gcc
+            lldb
+
+            libiconv
 
             cargo-nextest
           ]);
@@ -42,8 +44,11 @@
           ++ (with pkgsWithFenix; [
             taplo
             rust-analyzer-nightly
-            pkg-config
-            openssl.dev
+            gcc
+            lldb
+
+            libiconv
+
             cargo-nextest
           ]);
 
@@ -59,9 +64,12 @@
           basePackages
           ++ (with pkgsWithFenix; [
             taplo
-            libiconv
-            gcc
             rust-analyzer-nightly
+            gcc
+            lldb
+
+            libiconv
+
             cargo-nextest
           ]);
 
