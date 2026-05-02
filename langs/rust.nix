@@ -25,6 +25,7 @@
             rust-analyzer
             gcc
             lldb
+            pkg-config
 
             libiconv
 
@@ -54,6 +55,7 @@
             gcc
             lldb
             gdb
+            pkg-config
 
             libiconv
 
@@ -83,6 +85,7 @@
             rust-analyzer-nightly
             gcc
             lldb
+            pkg-config
 
             libiconv
 
