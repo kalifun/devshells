@@ -35,6 +35,14 @@
           inputs.fenix.packages.${system}.stable.toolchain
         ];
 
+        shellHook = ''
+          echo initing rust env
+          rustc --version
+          cargo --version
+          export PATH=$PATH:~/.cargo/bin
+          echo loaded rust env
+        '';
+
         RUST_BACKTRACE = 1;
       };
 
@@ -43,9 +51,9 @@
           basePackages
           ++ (with pkgsWithFenix; [
             taplo
-            rust-analyzer-nightly
             gcc
             lldb
+            gdb
 
             libiconv
 
@@ -55,6 +63,14 @@
         nativeBuildInputs = [
           inputs.fenix.packages.${system}.complete.toolchain
         ];
+
+        shellHook = ''
+          echo initing rust env
+          rustc --version
+          cargo --version
+          export PATH=$PATH:~/.cargo/bin
+          echo loaded rust env
+        '';
 
         RUST_BACKTRACE = 1;
       };
@@ -76,6 +92,14 @@
         nativeBuildInputs = [
           wasmToolchain
         ];
+
+        shellHook = ''
+          echo initing rust env
+          rustc --version
+          cargo --version
+          export PATH=$PATH:~/.cargo/bin
+          echo loaded rust env
+        '';
 
         RUST_BACKTRACE = 1;
       };
