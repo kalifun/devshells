@@ -33,6 +33,7 @@
         ./templates/default.nix
 
         ./langs/go.nix
+        ./langs/java.nix
         ./langs/lua.nix
         ./langs/nix.nix
         ./langs/nodejs.nix
