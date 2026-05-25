@@ -30,6 +30,8 @@
 
       imports = [
         ./common.nix
+        ./index.nix
+        ./pkgs.nix
         ./templates/default.nix
 
         ./langs/go.nix

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+FLAKE="${DEVshellS_FLAKE:-github:kalifun/devshells}"
+
+INDEX_JSON=$(nix eval "${FLAKE}#devshellsIndex" --json 2>/dev/null)
+if [[ -z "$INDEX_JSON" ]]; then
+  echo "Failed to fetch devshellsIndex from $FLAKE" >&2
+  echo "Make sure the flake URL is correct and accessible." >&2
+  exit 1
+fi
+
+mode=$(
+  printf 'simple\ntemplate\n' |
+    fzf --prompt="Mode: " --height=8 --border \
+      --header=$'simple: .envrc -> remote devshell\ntemplate: nix flake init + local .envrc'
+)
+[[ -z "$mode" ]] && { echo "No selection made, exiting."; exit 1; }
+
+if [[ "$mode" == "simple" ]]; then
+  selected=$(
+    printf '%s' "$INDEX_JSON" |
+      jq -r '.simple | to_entries[] | "\(.key)\t\(.value.description)"' |
+      fzf --prompt="Select devshell: " --height=20 --border --with-nth=2.. --delimiter=$'\t'
+  )
+  [[ -z "$selected" ]] && { echo "No selection made, exiting."; exit 1; }
+
+  selected_name=$(echo "$selected" | cut -f1)
+
+  if [[ -f .envrc ]]; then
+    echo -n ".envrc already exists, overwrite? [y/N] "
+    read -r answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 0
+  fi
+
+  echo "use flake ${FLAKE}#${selected_name}" > .envrc
+  direnv allow
+  echo "Created .envrc for ${selected_name}"
+
+else
+  selected=$(
+    printf '%s' "$INDEX_JSON" |
+      jq -r '.template | to_entries[] | "\(.key)\t\(.value.description)"' |
+      fzf --prompt="Select template: " --height=10 --border --with-nth=2.. --delimiter=$'\t'
+  )
+  [[ -z "$selected" ]] && { echo "No selection made, exiting."; exit 1; }
+
+  selected_name=$(echo "$selected" | cut -f1)
+
+  if [[ -f flake.nix ]]; then
+    echo -n "flake.nix already exists, overwrite? [y/N] "
+    read -r answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 0
+  fi
+
+  nix flake init -t "${FLAKE}#${selected_name}"
+
+  if [[ -f .envrc ]]; then
+    echo -n ".envrc already exists, overwrite? [y/N] "
+    read -r answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 0
+  fi
+
+  echo "use flake ." > .envrc
+  direnv allow
+  echo "Created flake.nix + .envrc for ${selected_name} template"
+fi
