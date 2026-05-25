@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  index:
+  devshells:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,70 +14,39 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v8
       - run: nix eval .#devshellsIndex --json | jq .
         name: Validate devshellsIndex
-
-  devshells:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shell:
-          - rust-stable
-          - rust-nightly
-          - rust-nightly-wasm
-          - go-latest
-          - go-1_25
-          - go-1_24
-          - java-android
-          - lua
-          - nix
-          - nodejs-20
-          - nodejs-22
-          - python-311
-          - python-313
-          - python-314
-          - thrift
-          - zig
-          - zig-latest
-          - neovim
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
-      - run: nix build ".#devShells.x86_64-linux.${{ matrix.shell }}" --no-link
-        name: Build ${{ matrix.shell }}
+      - run: |
+          JSON=$(nix eval .#devshellsIndex --json)
+          SHELLS=$(echo "$JSON" | jq -r '.simple | keys[]')
+          echo "Building $(echo "$SHELLS" | wc -l) shells"
+          for shell in $SHELLS; do
+            echo "::group::Build $shell"
+            nix build ".#devShells.x86_64-linux.$shell" --no-link
+            echo "::endgroup::"
+          done
+        name: Build all devShells
+      - run: nix build .#mkdevshell --no-link
+        name: Build mkdevshell
 
   templates:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        template:
-          - go
-          - lua
-          - nodejs
-          - plain
-          - python
-          - rust
-          - zig
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v16
       - uses: DeterminateSystems/magic-nix-cache-action@v8
       - run: |
-          tmp=$(mktemp -d)
-          cd "$tmp"
-          nix flake init -t "git+file://${{ github.workspace }}#${{ matrix.template }}"
-          # point generated flake to local checkout instead of github URL
-          sed -i 's|github:kalifun/devshells|git+file://${{ github.workspace }}|' flake.nix
-          nix flake lock
-          nix build . --no-link
-        name: Template ${{ matrix.template }}
-
-  mkdevshell:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
-      - run: nix build .#mkdevshell --no-link
-        name: Build mkdevshell package
+          JSON=$(nix eval .#devshellsIndex --json)
+          TEMPLATES=$(echo "$JSON" | jq -r '.template | keys[]')
+          echo "Testing $(echo "$TEMPLATES" | wc -l) templates"
+          for tmpl in $TEMPLATES; do
+            echo "::group::Template $tmpl"
+            tmp=$(mktemp -d)
+            cd "$tmp"
+            nix flake init -t "git+file://${{ github.workspace }}#$tmpl"
+            # point generated flake to local checkout instead of github URL
+            sed -i 's|github:kalifun/devshells|git+file://${{ github.workspace }}|' flake.nix
+            nix flake lock
+            nix build ".#devShells.x86_64-linux.default" --no-link
+            rm -rf "$tmp"
+            echo "::endgroup::"
+          done
+        name: Test all templates
