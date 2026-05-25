@@ -76,5 +76,8 @@
         description = "Python project template with uv";
       };
     };
+    composite = {
+      description = "Multi-shell composite (combine any shells via inputsFrom)";
+    };
   };
 }

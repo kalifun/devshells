@@ -44,6 +44,7 @@
         ./langs/thrift.nix
         ./langs/zig.nix
         ./langs/default.nix
+        ./langs/composite.nix
 
         ./projects/neovim.nix
       ];

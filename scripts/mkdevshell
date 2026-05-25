@@ -11,9 +11,9 @@ if [[ -z "$INDEX_JSON" ]]; then
 fi
 
 mode=$(
-  printf 'simple\ntemplate\n' |
-    fzf --prompt="Mode: " --height=8 --border \
-      --header=$'simple: .envrc -> remote devshell\ntemplate: nix flake init + local .envrc'
+  printf 'simple\ncomposite\ntemplate\n' |
+    fzf --prompt="Mode: " --height=10 --border \
+      --header=$'simple:    .envrc -> single remote devshell\ncomposite: .envrc + flake.nix -> combine multiple shells\ntemplate: nix flake init + local .envrc'
 )
 [[ -z "$mode" ]] && { echo "No selection made, exiting."; exit 1; }
 
@@ -36,6 +36,67 @@ if [[ "$mode" == "simple" ]]; then
   echo "use flake ${FLAKE}#${selected_name}" > .envrc
   direnv allow
   echo "Created .envrc for ${selected_name}"
+
+elif [[ "$mode" == "composite" ]]; then
+  selected=$(
+    printf '%s' "$INDEX_JSON" |
+      jq -r '.simple | to_entries[] | "\(.key)\t\(.value.description)"' |
+      fzf --prompt="Select shells (Tab to multi-select): " --height=20 --border -m \
+        --with-nth=2.. --delimiter=$'\t'
+  )
+  [[ -z "$selected" ]] && { echo "No selection made, exiting."; exit 1; }
+
+  selected_names=()
+  while IFS=$'\t' read -r key rest; do
+    selected_names+=("$key")
+  done <<< "$selected"
+
+  if [[ ${#selected_names[@]} -eq 1 ]]; then
+    echo "Only one shell selected. Use 'simple' mode for single shells." >&2
+    exit 1
+  fi
+
+  if [[ -f flake.nix ]]; then
+    echo -n "flake.nix already exists, overwrite? [y/N] "
+    read -r answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 0
+  fi
+
+  inputsFrom=$(printf '          devshells.devShells.${system}."%s"\n' "${selected_names[@]}")
+
+  cat > flake.nix <<EOF
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    utils.url = "github:numtide/flake-utils";
+    devshells = {
+      url = "${FLAKE}";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { nixpkgs, utils, devshells, ... }:
+    utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.\${system};
+    in {
+      devShells.default = pkgs.mkShell {
+        inputsFrom = [
+${inputsFrom}
+        ];
+      };
+    });
+}
+EOF
+
+  if [[ -f .envrc ]]; then
+    echo -n ".envrc already exists, overwrite? [y/N] "
+    read -r answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 0
+  fi
+
+  echo "use flake ." > .envrc
+  direnv allow
+  echo "Created flake.nix + .envrc combining: ${selected_names[*]}"
 
 else
   selected=$(
