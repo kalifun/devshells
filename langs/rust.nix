@@ -3,6 +3,7 @@
     pkgs,
     system,
     basePackages,
+    baseShellHook,
     ...
   }: let
     pkgsWithFenix = import inputs.nixpkgs {
@@ -15,6 +16,14 @@
         complete.toolchain
         targets.wasm32-unknown-unknown.latest.rust-std
       ];
+
+    rustShellHook = baseShellHook + ''
+      echo initing rust env
+      rustc --version
+      cargo --version
+      export PATH=$PATH:~/.cargo/bin
+      echo loaded rust env
+    '';
   in {
     devShells = {
       "rust-stable" = pkgsWithFenix.mkShell {
@@ -36,13 +45,7 @@
           inputs.fenix.packages.${system}.stable.toolchain
         ];
 
-        shellHook = ''
-          echo initing rust env
-          rustc --version
-          cargo --version
-          export PATH=$PATH:~/.cargo/bin
-          echo loaded rust env
-        '';
+        shellHook = rustShellHook;
 
         RUST_BACKTRACE = 1;
       };
@@ -66,13 +69,7 @@
           inputs.fenix.packages.${system}.complete.toolchain
         ];
 
-        shellHook = ''
-          echo initing rust env
-          rustc --version
-          cargo --version
-          export PATH=$PATH:~/.cargo/bin
-          echo loaded rust env
-        '';
+        shellHook = rustShellHook;
 
         RUST_BACKTRACE = 1;
       };
@@ -96,13 +93,7 @@
           wasmToolchain
         ];
 
-        shellHook = ''
-          echo initing rust env
-          rustc --version
-          cargo --version
-          export PATH=$PATH:~/.cargo/bin
-          echo loaded rust env
-        '';
+        shellHook = rustShellHook;
 
         RUST_BACKTRACE = 1;
       };
