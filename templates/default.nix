@@ -1,37 +1,32 @@
-{...}: {
+{ ... }:
+{
   flake.templates = {
     plain = {
-      description = "plain shell template based on devshells";
+      description = "Plain shell with common base packages";
       path = ./plain;
     };
-
     rust = {
-      description = "rust shell template based on devshells";
+      description = "Rust project with fenix toolchain management";
       path = ./rust;
     };
-
     go = {
-      description = "go shell template based on devshells";
+      description = "Go project template";
       path = ./go;
     };
-
     lua = {
-      description = "lua shell template based on devshells";
+      description = "Lua project template";
       path = ./lua;
     };
-
     zig = {
-      description = "zig shell template based on devshells";
+      description = "Zig project template";
       path = ./zig;
     };
-
     nodejs = {
-      description = "nodejs shell template based on devshells";
+      description = "Node.js project template";
       path = ./nodejs;
     };
-
     python = {
-      description = "python shell template based on devshells";
+      description = "Python project template with uv";
       path = ./python;
     };
   };

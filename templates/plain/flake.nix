@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     devshells = {
-      url = "github:acehinnnqru/devshells";
+      url = "github:kalifun/devshells";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,23 +14,20 @@
     devshells,
     ...
   }:
-    utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {inherit system;};
-      in {
-        devShells.default = pkgs.mkShell {
-          inputsFrom = [
-            devshells.devShells.${system}.default
-          ];
+    utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs { inherit system; };
+    in {
+      devShells.default = pkgs.mkShell {
+        inputsFrom = [
+          devshells.devShells.${system}.default
+        ];
 
-          packages = with pkgs; [
-            # install the packages you need
-          ];
+        packages = with pkgs; [
+        ];
 
-          shellHook = ''
-            echo "enter custom devshells"
-          '';
-        };
-      }
-    );
+        shellHook = ''
+          echo "enter custom devshells"
+        '';
+      };
+    });
 }

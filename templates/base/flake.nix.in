@@ -3,30 +3,39 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     devshells = {
-      url = "github:kalifun/devshells";
+      url = "@flakeUrl@";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    @extraInputs@
   };
 
   outputs = {
     nixpkgs,
     utils,
     devshells,
+    @extraOutputArgs@
     ...
   }:
     utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        @extraPkgsOverlay@
+      };
     in {
       devShells.default = pkgs.mkShell {
         inputsFrom = [
-          devshells.devShells.${system}."go-latest"
+          devshells.devShells.${system}."@shell@"
         ];
 
         packages = with pkgs; [
+          @extraPackages@
         ];
+
+        @envBlock@
 
         shellHook = ''
           echo "enter custom devshells"
+          @extraShellHook@
         '';
       };
     });
